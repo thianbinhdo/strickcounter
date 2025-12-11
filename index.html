@@ -1,70 +1,294 @@
 <!DOCTYPE html>
 <html lang="de">
 <head>
-<meta charset="UTF-8">
-<title>Strickcounter – Sophie Scarf</title>
-<style>
-  body { font-family: sans-serif; text-align: center; padding: 30px; }
-  .number { font-size: 3rem; margin: 10px 0; }
-  button { font-size: 1.5rem; padding: 15px 25px; margin: 10px; }
-  #hinweis { color: #b30000; font-size: 1.5rem; margin-top: 20px; height: 2rem; }
-</style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Strickzähler</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .container {
+            background: white;
+            border-radius: 20px;
+            padding: 40px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            max-width: 400px;
+            width: 100%;
+        }
+
+        h1 {
+            text-align: center;
+            color: #667eea;
+            margin-bottom: 30px;
+            font-size: 2em;
+        }
+
+        .counter-section {
+            margin-bottom: 30px;
+            padding: 20px;
+            background: #f8f9fa;
+            border-radius: 15px;
+        }
+
+        .counter-label {
+            font-size: 0.9em;
+            color: #666;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 10px;
+        }
+
+        .counter-display {
+            font-size: 4em;
+            font-weight: bold;
+            color: #333;
+            text-align: center;
+            margin: 20px 0;
+        }
+
+        .row-counter {
+            color: #667eea;
+        }
+
+        .increase-counter {
+            color: #764ba2;
+        }
+
+        .button-group {
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        button {
+            padding: 15px 25px;
+            font-size: 1.1em;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: 600;
+            color: white;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            flex: 1;
+            min-width: 120px;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+        }
+
+        .btn-secondary {
+            background: #6c757d;
+            flex: 1;
+        }
+
+        .btn-secondary:hover {
+            background: #5a6268;
+            transform: translateY(-2px);
+        }
+
+        .btn-danger {
+            background: #dc3545;
+        }
+
+        .btn-danger:hover {
+            background: #c82333;
+            transform: translateY(-2px);
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 10px;
+            background: #e9ecef;
+            border-radius: 5px;
+            margin-top: 15px;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #667eea 0%, #764ba2 100%);
+            transition: width 0.3s ease;
+        }
+
+        .celebration {
+            text-align: center;
+            font-size: 3em;
+            margin-top: 10px;
+            animation: bounce 0.5s ease;
+        }
+
+        .increase-message {
+            text-align: center;
+            font-size: 1.3em;
+            font-weight: bold;
+            color: #dc3545;
+            margin-top: 15px;
+            padding: 15px;
+            background: #fff3cd;
+            border-radius: 10px;
+            border: 2px solid #ffc107;
+            animation: pulse 1s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+
+        @keyframes bounce {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.2); }
+        }
+    </style>
 </head>
 <body>
+    <div class="container">
+        <h1>Hallo Knitty Miffy ☀️</h1>
+        
+        <div class="counter-section">
+            <div class="counter-label">Aktuelle Reihe</div>
+            <div class="counter-display row-counter" id="rowCounter">0</div>
+            <div class="progress-bar">
+                <div class="progress-fill" id="progressBar"></div>
+            </div>
+            <div class="button-group" style="margin-top: 20px;">
+                <button class="btn-primary" onclick="incrementRow()">Reihe +</button>
+                <button class="btn-secondary" onclick="decrementRow()">Reihe -</button>
+            </div>
+            <div class="button-group" style="margin-top: 10px;">
+                <button class="btn-danger" onclick="resetRow()">Reihe zurücksetzen</button>
+            </div>
+            <div id="increaseMessage" class="increase-message"></div>
+            <div id="celebration"></div>
+        </div>
 
-<h1>Sophie Scarf Counter</h1>
+        <div class="counter-section">
+            <div class="counter-label">Zunahmen gesamt</div>
+            <div class="counter-display increase-counter" id="increaseCounter">0</div>
+            <div class="button-group">
+                <button class="btn-danger" onclick="resetIncrease()">Zunahmen zurücksetzen</button>
+            </div>
+        </div>
 
-<h2>Reihen seit letzter Zunahme</h2>
-<div id="reihe" class="number">0</div>
+        <div class="button-group">
+            <button class="btn-danger" onclick="resetAll()">Alles zurücksetzen</button>
+        </div>
+    </div>
 
-<h2>Zunahmen insgesamt</h2>
-<div id="zunahmen" class="number">0</div>
+    <script>
+        let rowCount = 0;
+        let increaseCount = 0;
 
-<button onclick="incRow()">+1 Reihe</button><br>
-<button onclick="resetAll()">Alles zurücksetzen</button>
+        // Lade gespeicherte Werte beim Start
+        function loadProgress() {
+            const savedRow = localStorage.getItem('rowCount');
+            const savedIncrease = localStorage.getItem('increaseCount');
+            
+            if (savedRow !== null) {
+                rowCount = parseInt(savedRow);
+            }
+            if (savedIncrease !== null) {
+                increaseCount = parseInt(savedIncrease);
+            }
+        }
 
-<div id="hinweis"></div>
+        // Speichere Werte
+        function saveProgress() {
+            localStorage.setItem('rowCount', rowCount);
+            localStorage.setItem('increaseCount', increaseCount);
+        }
 
-<script>
-const LIMIT = 8;
+        function updateDisplay() {
+            document.getElementById('rowCounter').textContent = rowCount;
+            document.getElementById('increaseCounter').textContent = increaseCount;
+            
+            const progress = (rowCount / 8) * 100;
+            document.getElementById('progressBar').style.width = progress + '%';
+            
+            const message = document.getElementById('increaseMessage');
+            if (rowCount === 7) {
+                message.textContent = '🌸 Stricke jetzt eine Zunahme 🌸';
+                message.style.display = 'block';
+            } else {
+                message.style.display = 'none';
+            }
+        }
 
-let reihe = parseInt(localStorage.getItem("reihe")) || 0;
-let zunahmen = parseInt(localStorage.getItem("zunahmen")) || 0;
+        function showCelebration() {
+            const celebration = document.getElementById('celebration');
+            celebration.textContent = '🎉';
+            setTimeout(() => {
+                celebration.textContent = '';
+            }, 1000);
+        }
 
-function update() {
-    document.getElementById("reihe").textContent = reihe;
-    document.getElementById("zunahmen").textContent = zunahmen;
+        function incrementRow() {
+            rowCount++;
+            
+            if (rowCount >= 8) {
+                increaseCount++;
+                rowCount = 0;
+                showCelebration();
+            }
+            
+            saveProgress();
+            updateDisplay();
+        }
 
-    localStorage.setItem("reihe", reihe);
-    localStorage.setItem("zunahmen", zunahmen);
+        function decrementRow() {
+            if (rowCount > 0) {
+                rowCount--;
+                saveProgress();
+                updateDisplay();
+            }
+        }
 
-    const hinweis = document.getElementById("hinweis");
-    if (reihe === 7) {
-        hinweis.textContent = "Jetzt Zunahme stricken!";
-    } else {
-        hinweis.textContent = "";
-    }
-}
+        function resetRow() {
+            rowCount = 0;
+            saveProgress();
+            updateDisplay();
+        }
 
-function incRow() {
-    reihe++;
-    if (reihe >= LIMIT) {
-        zunahmen++;
-        reihe = 0;
-    }
-    update();
-}
+        function resetIncrease() {
+            increaseCount = 0;
+            saveProgress();
+            updateDisplay();
+        }
 
-function resetAll() {
-    if (confirm("Alles zurücksetzen?")) {
-        reihe = 0;
-        zunahmen = 0;
-        update();
-    }
-}
+        function resetAll() {
+            rowCount = 0;
+            increaseCount = 0;
+            saveProgress();
+            updateDisplay();
+        }
 
-update();
-</script>
+        // Lade Fortschritt beim Start
+        loadProgress();
+        updateDisplay();
+    </script>
+</body>
+</html>
 
 </body>
 </html>
