@@ -28,7 +28,6 @@
 <script>
 const LIMIT = 8;
 
-// Werte aus dem Speicher laden
 let reihe = parseInt(localStorage.getItem("reihe")) || 0;
 let zunahmen = parseInt(localStorage.getItem("zunahmen")) || 0;
 
@@ -36,11 +35,9 @@ function update() {
     document.getElementById("reihe").textContent = reihe;
     document.getElementById("zunahmen").textContent = zunahmen;
 
-    // speichern
     localStorage.setItem("reihe", reihe);
     localStorage.setItem("zunahmen", zunahmen);
 
-    // Hinweis bei Reihe 7
     const hinweis = document.getElementById("hinweis");
     if (reihe === 7) {
         hinweis.textContent = "Jetzt Zunahme stricken!";
@@ -51,13 +48,10 @@ function update() {
 
 function incRow() {
     reihe++;
-
-    // automatische Zunahme bei Reihe 8
     if (reihe >= LIMIT) {
         zunahmen++;
         reihe = 0;
     }
-
     update();
 }
 
@@ -74,3 +68,4 @@ update();
 
 </body>
 </html>
+
