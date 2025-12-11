@@ -1,0 +1,92 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+  <meta http-equiv="Content-Style-Type" content="text/css">
+  <title></title>
+  <meta name="Generator" content="Cocoa HTML Writer">
+  <meta name="CocoaVersion" content="2685.2">
+  <style type="text/css">
+    p.p1 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica}
+    p.p2 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica; min-height: 14.0px}
+  </style>
+</head>
+<body>
+<p class="p1">&lt;!DOCTYPE html&gt;</p>
+<p class="p1">&lt;html lang="de"&gt;</p>
+<p class="p1">&lt;head&gt;</p>
+<p class="p1">&lt;meta charset="UTF-8"&gt;</p>
+<p class="p1">&lt;title&gt;Strickcounter – Sophie Scarf&lt;/title&gt;</p>
+<p class="p1">&lt;style&gt;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>body { font-family: sans-serif; text-align: center; padding: 30px; }</p>
+<p class="p1"><span class="Apple-converted-space">  </span>.number { font-size: 3rem; margin: 10px 0; }</p>
+<p class="p1"><span class="Apple-converted-space">  </span>button { font-size: 1.5rem; padding: 15px 25px; margin: 10px; }</p>
+<p class="p1"><span class="Apple-converted-space">  </span>#hinweis { color: #b30000; font-size: 1.5rem; margin-top: 20px; height: 2rem; }</p>
+<p class="p1">&lt;/style&gt;</p>
+<p class="p1">&lt;/head&gt;</p>
+<p class="p1">&lt;body&gt;</p>
+<p class="p2"><br></p>
+<p class="p1">&lt;h1&gt;Sophie Scarf Counter&lt;/h1&gt;</p>
+<p class="p2"><br></p>
+<p class="p1">&lt;h2&gt;Reihen seit letzter Zunahme&lt;/h2&gt;</p>
+<p class="p1">&lt;div id="reihe" class="number"&gt;0&lt;/div&gt;</p>
+<p class="p2"><br></p>
+<p class="p1">&lt;h2&gt;Zunahmen insgesamt&lt;/h2&gt;</p>
+<p class="p1">&lt;div id="zunahmen" class="number"&gt;0&lt;/div&gt;</p>
+<p class="p2"><br></p>
+<p class="p1">&lt;button onclick="incRow()"&gt;+1 Reihe&lt;/button&gt;&lt;br&gt;</p>
+<p class="p1">&lt;button onclick="resetAll()"&gt;Alles zurücksetzen&lt;/button&gt;</p>
+<p class="p2"><br></p>
+<p class="p1">&lt;div id="hinweis"&gt;&lt;/div&gt;</p>
+<p class="p2"><br></p>
+<p class="p1">&lt;script&gt;</p>
+<p class="p1">const LIMIT = 8;</p>
+<p class="p2"><br></p>
+<p class="p1">// Werte aus Speicher laden</p>
+<p class="p1">let reihe = parseInt(localStorage.getItem("reihe")) || 0;</p>
+<p class="p1">let zunahmen = parseInt(localStorage.getItem("zunahmen")) || 0;</p>
+<p class="p2"><br></p>
+<p class="p1">function update() {</p>
+<p class="p1"><span class="Apple-converted-space">    </span>document.getElementById("reihe").textContent = reihe;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>document.getElementById("zunahmen").textContent = zunahmen;</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">    </span>// speichern</p>
+<p class="p1"><span class="Apple-converted-space">    </span>localStorage.setItem("reihe", reihe);</p>
+<p class="p1"><span class="Apple-converted-space">    </span>localStorage.setItem("zunahmen", zunahmen);</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">    </span>// Hinweis bei Reihe 7</p>
+<p class="p1"><span class="Apple-converted-space">    </span>const hinweis = document.getElementById("hinweis");</p>
+<p class="p1"><span class="Apple-converted-space">    </span>if (reihe === 7) {</p>
+<p class="p1"><span class="Apple-converted-space">        </span>hinweis.textContent = "Jetzt Zunahme stricken!";</p>
+<p class="p1"><span class="Apple-converted-space">    </span>} else {</p>
+<p class="p1"><span class="Apple-converted-space">        </span>hinweis.textContent = "";</p>
+<p class="p1"><span class="Apple-converted-space">    </span>}</p>
+<p class="p1">}</p>
+<p class="p2"><br></p>
+<p class="p1">function incRow() {</p>
+<p class="p1"><span class="Apple-converted-space">    </span>reihe++;</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">    </span>// automatische Zunahme bei Reihe 8</p>
+<p class="p1"><span class="Apple-converted-space">    </span>if (reihe &gt;= LIMIT) {</p>
+<p class="p1"><span class="Apple-converted-space">        </span>zunahmen++;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>reihe = 0;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">    </span>update();</p>
+<p class="p1">}</p>
+<p class="p2"><br></p>
+<p class="p1">function resetAll() {</p>
+<p class="p1"><span class="Apple-converted-space">    </span>if (confirm("Alles zurücksetzen?")) {</p>
+<p class="p1"><span class="Apple-converted-space">        </span>reihe = 0;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>zunahmen = 0;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>update();</p>
+<p class="p1"><span class="Apple-converted-space">    </span>}</p>
+<p class="p1">}</p>
+<p class="p2"><br></p>
+<p class="p1">update();</p>
+<p class="p1">&lt;/script&gt;</p>
+<p class="p2"><br></p>
+<p class="p1">&lt;/body&gt;</p>
+<p class="p1">&lt;/html&gt;</p>
+</body>
+</html>
